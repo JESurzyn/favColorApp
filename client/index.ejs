@@ -7,6 +7,15 @@
     <title>My Favorite Color</title>
 </head>
 <script>
+
+    const makeHttpRequest = async () => {
+        console.log('making http request...')
+        const response = await fetch('http://localhost:3000/users');
+        const finalResponse = await response.json();
+        console.log(finalResponse)
+        // do something with myJson
+    }
+
     const changeColor = ()=> { 
         // get select element
         // get its value 
@@ -29,9 +38,10 @@
                 <option value="<%=color%>"><%=color%></option>
             <% } %> 
         </select>
-        <button onclick="changeColor()">Submit</button>
+        
         
     </form>
+    <button onclick="makeHttpRequest()">Submit</button>
     <!-- <button onclick="changeColor()">Submit</button> -->
     <!-- <script src="userCreate.js"></script> -->
 </body>
