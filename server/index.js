@@ -13,7 +13,7 @@ mongoose.connect('mongodb://localhost:27017/userColors')
         console.log(e);
     })
 
-app.set('views', path.join(__dirname,'views'));
+app.set('views', path.join(__dirname,'../client'));
 app.set('view engine', 'ejs');
 
 //middleware
@@ -32,6 +32,10 @@ app.post('/', (req,res) => {
     console.log(req.body)
     res.send('Post request received');
 //    res.redirect('/')
+})
+
+app.get('/users', (req, res) => {
+    res.json('test').send();
 })
 
 //run app
