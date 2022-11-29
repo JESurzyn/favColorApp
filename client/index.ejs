@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Favorite Color</title>
+</head>
+
+<body id="body">
+    <h1>My Favorite Color</h1>
+    <!-- TO DO: -->
+    <!-- add in readout of usename if a user has been selected -->
+    <!-- if a user has not been selected, add in default select for color otherwise -->
+    <!-- if a user has been selected, add these values as default into the creation bar -->
+    <!-- <form action="/users" id="userCreate" method="POST" onsubmit="makeHttpRequest()"> -->
+    <form action="/users" id="userCreate" method="POST">
+        <label for="username">Create Username and Color:</label>
+        <input type="text" name="username" placeholder="username" id="username"/>
+        <select name="color" id="colorSelect">
+            <% for(let color of colors) {%> 
+                <option value="<%=color%>"><%=color%></option>
+            <% } %> 
+        </select>
+        <!-- <button onclick="changeColor()">Submit</button> -->
+        <button>Submit</button>
+    </form>
+    
+    <!-- <button onclick="changeColor()">Submit</button> -->
+    <br>
+
+
+    <form action="/search" id="userSearch" method="GET" onsubmit="searchUser()">
+        <label for="search">Search Username:</label>
+        <input type="text" name="search" placeholder="username" id="search">
+        <button>Submit</button> 
+    </form>
+    
+    <script>
+        const userSearchForm = document.querySelector('#userSearch');
+        userSearchForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+        })
+        const searchUser = async () => {
+            const userSearch = document.getElementById('search');
+            const userName = userSearch.value;
+            console.log('submitting search for user....')
+            const resProm = await fetch(`http://localhost:3000/search?search=${userName}`)
+            const userColor = await resProm.json()
+            console.log(userColor)
+            document.getElementById('body').style.backgroundColor = userColor;
+        }
+            // fetch(`http://localhost:3000/search?search=${userName}`)
+            //     .then((res) => {
+            //         console.log('RESPOLVED', res);
+            //         return res.json()
+            //     })
+            //     .then(data => {
+            //         console.log("JSON DONE", data)
+            //     })
+            //     .catch((e) => {
+            //         console.log("ERROR", e);
+            //     });
+            //     }
+            // console.log(response)
+            // const finalResponse = await response.json()
+            // console.log(finalResponse)
+    </script>
+
+    <script>
+        const userCreateForm = document.querySelector('#userCreate');
+        userCreateForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+            let form = e.target
+            form.submit()
+            const colorSelect = document.getElementById('colorSelect');
+            const color = colorSelect.value;
+            document.getElementById('body').style.backgroundColor = color;
+            })
+    </script>
+    <!-- <script src="userCreate.js"></script> -->
+</body>
+</html>
