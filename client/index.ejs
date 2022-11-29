@@ -6,14 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Favorite Color</title>
 </head>
+<script>
+    const createUser = async () => {
+        const usernameValue = document.getElementById('username').value;
+        const colorValue = document.getElementById('colorSelect').value;
+
+        console.log('Sending create user request...');
+        console.log('username : ' + usernameValue);
+        console.log('color : ' + colorValue);
+
+        const userCreateResponse = await fetch('/users', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {   
+                    username: usernameValue,
+                    color: colorValue
+                })
+        });
+        const user = await userCreateResponse.json();
+        changeBackgroundColor(user.color);
+    }
+    
+    const searchUser = async () => {
+        const userSearch = document.getElementById('search');
+        const userName = userSearch.value;
+        console.log('submitting search for user....')
+        const searchUserResponse = await fetch(`http://localhost:3000/search?search=${userName}`)
+        if(searchUserResponse.status === 200) {
+            const user = await searchUserResponse.json();
+            console.log(user);
+            changeBackgroundColor(user.color);
+        } else {
+            console.log('No user found');
+        }
+    }
+
+    const changeBackgroundColor = (color) => {
+        document.getElementById('body').style.backgroundColor = color;
+    }
+</script>
 
 <body id="body">
     <h1>My Favorite Color</h1>
-    <!-- TO DO: -->
-    <!-- add in readout of usename if a user has been selected -->
-    <!-- if a user has not been selected, add in default select for color otherwise -->
-    <!-- if a user has been selected, add these values as default into the creation bar -->
-    <!-- <form action="/users" id="userCreate" method="POST" onsubmit="makeHttpRequest()"> -->
     <form action="/users" id="userCreate" method="POST">
         <label for="username">Create Username and Color:</label>
         <input type="text" name="username" placeholder="username" id="username"/>
@@ -22,61 +60,23 @@
                 <option value="<%=color%>"><%=color%></option>
             <% } %> 
         </select>
-        <!-- <button onclick="changeColor()">Submit</button> -->
-        <button>Submit</button>
     </form>
-    
-    <!-- <button onclick="changeColor()">Submit</button> -->
+    <button onclick="createUser()">Submit</button>
+    <br>
+    <br>
     <br>
 
 
     <form action="/search" id="userSearch" method="GET" onsubmit="searchUser()">
         <label for="search">Search Username:</label>
         <input type="text" name="search" placeholder="username" id="search">
-        <button>Submit</button> 
     </form>
-    
-    <script>
-        const userSearchForm = document.querySelector('#userSearch');
-        userSearchForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-        })
-        const searchUser = async () => {
-            const userSearch = document.getElementById('search');
-            const userName = userSearch.value;
-            console.log('submitting search for user....')
-            // const response = await fetch(`http://localhost:3000/search?search=${userName}`)
-            // console.log(response)
-            // const finalResponse = await response.json()
-            // console.log(finalResponse)
-            fetch(`http://localhost:3000/search?search=${userName}`)
-                .then((res) => {
-                    console.log('RESPOLVED', res);
-                    return res.json()
-                })
-                .then(data => {
-                    console.log("JSON DONE", data)
-                })
-                .catch((e) => {
-                    console.log("ERROR", e);
-                });
-                }
-            // console.log(response)
-            // const finalResponse = await response.json()
-            // console.log(finalResponse)
-    </script>
+    <button onclick="searchUser()">Submit</button>
 
-    <script>
-        const userCreateForm = document.querySelector('#userCreate');
-        userCreateForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            let form = e.target
-            form.submit()
-            const colorSelect = document.getElementById('colorSelect');
-            const color = colorSelect.value;
-            document.getElementById('body').style.backgroundColor = color;
-            })
-    </script>
-    <!-- <script src="userCreate.js"></script> -->
+    <br>
+    <br>
+    <br>
+    <button onclick="changeBackgroundColor('white')">Reset Background Color</button>
+
 </body>
 </html>
