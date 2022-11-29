@@ -55,15 +55,8 @@ app.get('/search', async (req, res) => {
     console.log(req.query)
     const {search} = req.query
     const foundUser = await User.find({username:search})
-    console.log(foundUser)
     console.log(foundUser[0])
-    // console.log(foundUser[0])
-    // console.log(json(foundUser[0]))
-    // const userIso = foundUser[0]
-    // console.log(userIso.color)
-    
-    console.log(foundUser[0].color)
-    res.json('tester').send();
+    res.json(foundUser[0].color);
     // console.log(foundUser[0].color)
 
     // res.send(foundUser[0].color)
