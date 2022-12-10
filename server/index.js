@@ -25,30 +25,15 @@ const colors = ['red', 'yellow', 'blue', 'orange', 'indigo', 'green', 'violet']
 
 //routes
 app.get('/', (req, res) => {
-    // res.send('Hello World');
     res.render('index', { colors })
 })
-// app.get('/users', async (req, res) => {
-//     // res.send('Hello World');
-//     // res.render('index', { colors })
-//     console.log(req.query)
-//     const {search} = req.query
-//     //provide if else logic for query response
-//     const user = await User.find({username:search})
-//     console.log(user[0].color)
-//     res.send('hello')
-// })
-// app.get('/users', (req, res) => {
-//     res.json('test').send();
-// })
+
 
 app.post('/users', async (req,res) => {
     console.log(req.body)
     const newUser = new User(req.body)
     await newUser.save();
     console.log(newUser);
-    // res.redirect('/')
-
 })
 
 app.get('/search', async (req, res) => {
@@ -57,9 +42,6 @@ app.get('/search', async (req, res) => {
     const foundUser = await User.find({username:search})
     console.log(foundUser[0])
     res.json(foundUser[0].color);
-    // console.log(foundUser[0].color)
-
-    // res.send(foundUser[0].color)
 })
 
 //run app
